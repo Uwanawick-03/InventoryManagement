@@ -24,6 +24,28 @@ public class Order extends javax.swing.JPanel {
         initComponents();
 
     }
+    
+    public void loadOrderDetails(){
+        DefaultTableModel model = (DefaultTableModel) tableOrder.getModel();
+        model.setRowCount(0);
+        
+        try{
+            Connection con = DBConnection.DBHelper.getConnection();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("Select Order_Id, Cust_Id, Order_Date from orders");
+            while(rs.next()){
+                model.addRow(new Object[]{
+                   rs.getString("Order_Id"),
+                   rs.getInt("Cust_Id"),
+                   rs.getString("Order_Date")
+                });
+            }
+            
+        }catch(Exception e){
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -39,7 +61,7 @@ public class Order extends javax.swing.JPanel {
         btnCheckout = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableOrder = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(140, 148, 156));
         setPreferredSize(new java.awt.Dimension(1000, 800));
@@ -83,7 +105,7 @@ public class Order extends javax.swing.JPanel {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableOrder.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -91,8 +113,8 @@ public class Order extends javax.swing.JPanel {
                 "Order_Id", "Customer_Id", "Date"
             }
         ));
-        jTable1.setPreferredSize(new java.awt.Dimension(900, 700));
-        jScrollPane1.setViewportView(jTable1);
+        tableOrder.setPreferredSize(new java.awt.Dimension(900, 700));
+        jScrollPane1.setViewportView(tableOrder);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -223,6 +245,6 @@ public class Order extends javax.swing.JPanel {
     private javax.swing.JButton btnNewOrder;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tableOrder;
     // End of variables declaration//GEN-END:variables
 }

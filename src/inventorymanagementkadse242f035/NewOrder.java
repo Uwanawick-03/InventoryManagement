@@ -56,7 +56,6 @@ public class NewOrder extends javax.swing.JPanel {
         txtItemPrice.setText("");
 
     }
-    
 
     public String getUniqueId(String prefix) {
         return prefix + nanoTime();
@@ -551,8 +550,24 @@ public class NewOrder extends javax.swing.JPanel {
                 for (int i = 0; i < tableCart.getRowCount(); i++) {
                     try {
                         Connection con = DBConnection.DBHelper.getConnection();
-                        Statement st = con.createStatement();
-                        st.executeUpdate("update item set Qty=Qty-" + Integer.parseInt(dtm.getValueAt(i, 2).toString()) + " where Item_Id=" + Integer.parseInt(dtm.getValueAt(i, 0).toString()));
+                        PreparedStatement saveOrder = con.prepareStatement("INSERT INTO order_items (Order_Id, Item_Id, Qty, Total_Price) VALUES (?,?,?,?)");
+                        PreparedStatement updateTable = con.prepareStatement("UPDATE item SET Qty = Qty - ? WHERE Item_Id = ?");
+
+                        for (int j = 0; j < dtm.getRowCount(); j++) {
+                            int itemId = Integer.parseInt(dtm.getValueAt(j, 0).toString());
+                            int itemQty = Integer.parseInt(dtm.getValueAt(j, 2).toString());
+                            double totalPrice = Double.parseDouble(dtm.getValueAt(j, 4).toString());
+
+                            saveOrder.setString(1, orderId);
+                            saveOrder.setInt(2, itemId);
+                            saveOrder.setInt(3, itemQty);
+                            saveOrder.setDouble(4, totalPrice);
+                            saveOrder.executeUpdate();
+
+                            updateTable.setInt(1, itemQty);
+                            updateTable.setInt(2, itemId);
+                            updateTable.executeUpdate();
+                        }
 
                     } catch (Exception e) {
                         JOptionPane.showMessageDialog(null, e);
@@ -570,59 +585,22 @@ public class NewOrder extends javax.swing.JPanel {
                 pstmt.setString(3, myFormat.format(cal.getTime()));
                 pstmt.setDouble(4, finalTot);
                 pstmt.executeUpdate();
+                
+                //Reset the table after save the order
+                dtm.setRowCount(0);
+                JOptionPane.showMessageDialog(null, "Order Placed Successfully");
+                //Navigate to order panel
+                Order OrderPanel = new Order();
+                container.add(OrderPanel, BorderLayout.CENTER);
+                container.removeAll();
+                container.setLayout(new BorderLayout());
+                container.add(OrderPanel, BorderLayout.CENTER);
+                container.revalidate();
+                container.repaint();
 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e);
             }
-
-            //Creating Document
-            com.itextpdf.text.Document doc = new com.itextpdf.text.Document();
-            try {
-                SimpleDateFormat myFormat = new SimpleDateFormat("dd-MM-YYYY");
-                Calendar cal = Calendar.getInstance();
-                PdfWriter.getInstance(doc, new FileOutputStream(dao.InventoryUtils.billPath + "" + orderId + ".pdf"));
-                doc.open();
-                Paragraph projectName = new Paragraph("Inventory Management System\n");
-                doc.add(projectName);
-                Paragraph startLine = new Paragraph("**********************************************************************************************************************************************************************************");
-                doc.add(startLine);
-                Paragraph details = new Paragraph("\tOrder ID: " + orderId + "\nDate: " + myFormat.format(cal.getTime()) + "\nTotal Paid: " + finalTot);
-                doc.add(details);
-                doc.add(startLine);
-                PdfPTable tb1 = new PdfPTable(4);
-                PdfPCell nameCell = new PdfPCell(new Phrase("Name"));
-                PdfPCell quantityCell = new PdfPCell(new Phrase("Quantity"));
-                PdfPCell priceCell = new PdfPCell(new Phrase("Price per Unit"));
-                PdfPCell subTotalPriceCell = new PdfPCell(new Phrase("Sub Total"));
-
-                BaseColor backgroundColor = new BaseColor(255, 204, 51);
-                nameCell.setBackgroundColor(backgroundColor);
-                quantityCell.setBackgroundColor(backgroundColor);
-                priceCell.setBackgroundColor(backgroundColor);
-                subTotalPriceCell.setBackgroundColor(backgroundColor);
-
-                tb1.addCell(nameCell);
-                tb1.addCell(quantityCell);
-                tb1.addCell(priceCell);
-                tb1.addCell(subTotalPriceCell);
-
-                for (int i = 0; i < tableCart.getRowCount(); i++) {
-                    tb1.addCell(tableCart.getValueAt(i, 1).toString());
-                    tb1.addCell(tableCart.getValueAt(i, 2).toString());
-                    tb1.addCell(tableCart.getValueAt(i, 3).toString());
-                    tb1.addCell(tableCart.getValueAt(i, 4).toString());
-
-                }
-                doc.add(tb1);
-                doc.add(startLine);
-                Paragraph tanksMsg = new Paragraph("Thank You, Come Again.");
-                doc.add(tanksMsg);
-                OpenPdf.OpenById(orderId);
-
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e);
-            }
-            doc.close();
         } else {
             JOptionPane.showMessageDialog(null, "Please add some item to cart or select customer");
         }

@@ -271,7 +271,7 @@ public class Home extends javax.swing.JFrame {
         // Refresh the panel
         container.revalidate();
         container.repaint();
-        //orderPanel.loadItemData();
+        orderPanel.loadOrderDetails();
     }//GEN-LAST:event_btnOrderActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
