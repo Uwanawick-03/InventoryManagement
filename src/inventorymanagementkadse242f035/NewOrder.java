@@ -6,7 +6,6 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import common.OpenPdf;
 import database.DBConnection;
 import java.awt.BorderLayout;
 import java.io.FileOutputStream;
@@ -597,6 +596,7 @@ public class NewOrder extends javax.swing.JPanel {
                 container.add(OrderPanel, BorderLayout.CENTER);
                 container.revalidate();
                 container.repaint();
+                OrderPanel.loadOrderDetails();
 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e);

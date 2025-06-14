@@ -22,6 +22,7 @@ public class Order extends javax.swing.JPanel {
     public Order() {
 
         initComponents();
+        btnDelete.setVisible(false);
 
     }
     
@@ -121,14 +122,14 @@ public class Order extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnNewOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50)
+                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(40, 40, 40)
                         .addComponent(btnCheckout, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50)
-                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(40, 40, 40)
+                        .addComponent(btnNewOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                             .addGap(416, 416, 416)
@@ -178,64 +179,11 @@ public class Order extends javax.swing.JPanel {
     }//GEN-LAST:event_btnNewOrderActionPerformed
 
     private void btnCheckoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckoutActionPerformed
-        /*String custName = txtCustName.getText();
-        String custPhone = txtCustPhone.getText();
-        String custEmail = txtCustEmail.getText();
-
-        if (validateFields("new")) {
-            JOptionPane.showMessageDialog(null, "All fields are required");
-        } else {
-            try {
-                Connection con = DBConnection.DBHelper.getConnection();
-                PreparedStatement pstmt = con.prepareStatement("insert into customer (Cust_Name, Phone, Email ) VALUES (?, ?, ?)");
-                pstmt.setString(1, custName);
-                pstmt.setString(2, custPhone);
-                pstmt.setString(3, custEmail);
-                pstmt.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Customer Registered Successfully");
-                setVisible(true);
-                loadCustomerData();
-                clearForm();
-
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e);
-            }
-        }*/
+       
     }//GEN-LAST:event_btnCheckoutActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        /*String custName = txtCustName.getText();
-        String custPhone = txtCustPhone.getText();
-        String custEmail = txtCustEmail.getText();
 
-        if (validateFields("edit")) {
-            JOptionPane.showMessageDialog(null, "Select Item To Delete");
-        } else {
-            int conDelete = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this customer?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
-            if (conDelete == 0) {
-                try {
-                    Connection con = DBConnection.DBHelper.getConnection();
-                    PreparedStatement pstmt = con.prepareStatement("DELETE FROM `customer` WHERE `Cust_Id` = ? AND `Cust_Name` = ? AND `Phone` = ? AND `Email` = ?");
-                    pstmt.setInt(1, custPk);
-                    pstmt.setString(2, custName);
-                    pstmt.setString(3, custPhone);
-                    pstmt.setString(4, custEmail);
-                    int rowsAffected = pstmt.executeUpdate();
-                    if (rowsAffected > 0) {
-                        JOptionPane.showMessageDialog(null, "Customer Deleted Successfully");
-                        setVisible(true);
-                        loadCustomerData();
-                        clearForm();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Customer Not Found");
-                    }
-
-                } catch (Exception e) {
-                    JOptionPane.showInternalMessageDialog(null, e);
-
-                }
-            }
-        }*/
     }//GEN-LAST:event_btnDeleteActionPerformed
 
 
