@@ -4,9 +4,21 @@ import database.DBConnection;
 import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JRDesignQuery;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class Dashboard extends javax.swing.JPanel {
-    
+
     private JPanel container;
 
     public void setContainer(JPanel container) {
@@ -22,14 +34,14 @@ public class Dashboard extends javax.swing.JPanel {
             Connection con = DBConnection.DBHelper.getConnection();
             Statement st = con.createStatement();
             ResultSet rsCust = st.executeQuery("SELECT c.Cust_Name, SUM(o.Total_Price) AS Total " + "FROM orders o " + "JOIN customer c ON o.Cust_Id = c.Cust_Id " + "GROUP BY c.Cust_Name " + "ORDER BY Total DESC " + "LIMIT 1");
-            
-            if(rsCust.next()){
+
+            if (rsCust.next()) {
                 String bestCust = rsCust.getString("Cust_Name");
                 lblBestCust.setText(bestCust);
             }
-            
+
             ResultSet rsItem = st.executeQuery("SELECT i.Item_Name, SUM(oi.Qty) AS Total " + "FROM order_items oi " + "JOIN item i ON oi.Item_Id = i.Item_Id " + "GROUP BY i.Item_Name " + "ORDER BY Total DESC " + "LIMIT 1");
-            if(rsItem.next()){
+            if (rsItem.next()) {
                 String bestItem = rsItem.getString("Item_Name");
                 lblBestItem.setText(bestItem);
             }
@@ -51,6 +63,7 @@ public class Dashboard extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         lblBestItem = new javax.swing.JLabel();
+        btnSeeReport = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         lblBestCust = new javax.swing.JLabel();
@@ -67,18 +80,35 @@ public class Dashboard extends javax.swing.JPanel {
         lblBestItem.setFont(new java.awt.Font("Microsoft YaHei", 0, 24)); // NOI18N
         lblBestItem.setText("Item");
 
+        btnSeeReport.setBackground(new java.awt.Color(4, 61, 142));
+        btnSeeReport.setFont(new java.awt.Font("Microsoft YaHei", 1, 16)); // NOI18N
+        btnSeeReport.setForeground(new java.awt.Color(255, 255, 255));
+        btnSeeReport.setText("See Report");
+        btnSeeReport.setBorder(null);
+        btnSeeReport.setPreferredSize(new java.awt.Dimension(89, 29));
+        btnSeeReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeeReportActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(51, Short.MAX_VALUE)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(174, 174, 174)
                 .addComponent(lblBestItem)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(51, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(51, 51, 51))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnSeeReport, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(14, 14, 14))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -87,7 +117,9 @@ public class Dashboard extends javax.swing.JPanel {
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblBestItem)
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addComponent(btnSeeReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
         );
 
         add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, -1, -1));
@@ -133,8 +165,40 @@ public class Dashboard extends javax.swing.JPanel {
         add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnSeeReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeeReportActionPerformed
+        try {
+            Connection con = DBConnection.DBHelper.getConnection();
+            Statement st = con.createStatement();
+
+            JasperDesign jDesign = JRXmlLoader.load("C:\\Users\\wickr\\OneDrive\\Documents\\NetBeansProjects\\InventoryManagementKADSE242F035\\src\\reports\\BestItem.jrxml");
+
+            String query = "SELECT i.Item_Name, SUM(oi.Qty) AS Total "
+                    + "FROM order_items oi "
+                    + "JOIN item i ON oi.Item_Id = i.Item_Id "
+                    + "GROUP BY i.Item_Name "
+                    + "ORDER BY Total DESC "
+                    + "LIMIT 5";
+            
+            JRDesignQuery updateQuery = new JRDesignQuery();
+            updateQuery.setText(query);
+            jDesign.setQuery(updateQuery);
+            
+            JasperReport jreport = JasperCompileManager.compileReport(jDesign);
+            JasperPrint jprint = JasperFillManager.fillReport(jreport, null,con);
+            
+            JasperViewer.viewReport(jprint, false);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (JRException ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+    }//GEN-LAST:event_btnSeeReportActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSeeReport;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="600" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="888377c0-317a-4135-bef7-c34e96fa418c">
+	<property name="ireport.zoom" value="1.610510000000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT i.Item_Name, SUM(oi.Qty) AS Total
+FROM order_items oi
+JOIN item i ON oi.Item_Id = i.Item_Id
+GROUP BY i.Item_Name
+ORDER BY Total DESC
+LIMIT 5]]>
+	</queryString>
+	<field name="Item_Name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Total" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="128" y="20" width="299" height="39" uuid="ffe5c188-55eb-40a5-bd05-944403e12446"/>
+				<textElement>
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[Inventory Management]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="51" splitType="Stretch">
+			<staticText>
+				<reportElement x="17" y="13" width="122" height="25" uuid="1c15e271-93aa-4fb5-b3ad-2b5e23306ea6"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Top Selling Items]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="95" y="18" width="120" height="25" uuid="9c9dfb0b-d4ea-4640-b713-4d3db3e5c316"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[Item Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="369" y="18" width="124" height="25" uuid="06934584-a824-46a9-b597-0253a3dc16e4"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[Total Item Sold]]></text>
+			</staticText>
+			<line>
+				<reportElement x="95" y="51" width="398" height="1" uuid="2604f3bd-a250-43df-8c18-8ae17ac6f224"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="205" splitType="Stretch">
+			<textField>
+				<reportElement x="95" y="11" width="274" height="20" uuid="f26b4f68-610c-4af6-8407-363f39da1879"/>
+				<textFieldExpression><![CDATA[$F{Item_Name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="369" y="11" width="124" height="20" uuid="00622a50-b95c-4be6-8c00-b2f43abe8323"/>
+				<textFieldExpression><![CDATA[$F{Total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="17" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="27" splitType="Stretch"/>
+	</summary>
+</jasperReport>

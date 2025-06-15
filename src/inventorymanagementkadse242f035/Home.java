@@ -52,7 +52,7 @@ public class Home extends javax.swing.JFrame {
     private void initComponents() {
 
         sidebar = new javax.swing.JPanel();
-        btnHome = new javax.swing.JButton();
+        btnDashboard = new javax.swing.JButton();
         btnUser = new javax.swing.JButton();
         btnItems = new javax.swing.JButton();
         btnBranch = new javax.swing.JButton();
@@ -67,17 +67,17 @@ public class Home extends javax.swing.JFrame {
         sidebar.setBackground(new java.awt.Color(207, 207, 211));
         sidebar.setPreferredSize(new java.awt.Dimension(280, 800));
 
-        btnHome.setBackground(new java.awt.Color(5, 63, 144));
-        btnHome.setFont(new java.awt.Font("Microsoft YaHei", 0, 18)); // NOI18N
-        btnHome.setForeground(new java.awt.Color(255, 255, 255));
-        btnHome.setText("Home");
-        btnHome.setActionCommand("");
-        btnHome.setBorder(null);
-        btnHome.setBorderPainted(false);
-        btnHome.setPreferredSize(new java.awt.Dimension(180, 40));
-        btnHome.addActionListener(new java.awt.event.ActionListener() {
+        btnDashboard.setBackground(new java.awt.Color(5, 63, 144));
+        btnDashboard.setFont(new java.awt.Font("Microsoft YaHei", 0, 18)); // NOI18N
+        btnDashboard.setForeground(new java.awt.Color(255, 255, 255));
+        btnDashboard.setText("Dashboard");
+        btnDashboard.setActionCommand("");
+        btnDashboard.setBorder(null);
+        btnDashboard.setBorderPainted(false);
+        btnDashboard.setPreferredSize(new java.awt.Dimension(180, 40));
+        btnDashboard.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHomeActionPerformed(evt);
+                btnDashboardActionPerformed(evt);
             }
         });
 
@@ -173,14 +173,14 @@ public class Home extends javax.swing.JFrame {
                         .addComponent(btnOrder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnBranch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnItems, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnHome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnDashboard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(50, Short.MAX_VALUE))
         );
         sidebarLayout.setVerticalGroup(
             sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(sidebarLayout.createSequentialGroup()
                 .addGap(80, 80, 80)
-                .addComponent(btnHome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnDashboard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
                 .addComponent(btnItems, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
@@ -224,7 +224,7 @@ public class Home extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
+    private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
         container.removeAll();
         // Load the Items panel
         Dashboard dashboard = new Dashboard();
@@ -235,7 +235,7 @@ public class Home extends javax.swing.JFrame {
         container.revalidate();
         container.repaint();
         dashboard.loadDashboard();
-    }//GEN-LAST:event_btnHomeActionPerformed
+    }//GEN-LAST:event_btnDashboardActionPerformed
 
     private void btnUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserActionPerformed
 
@@ -349,7 +349,7 @@ public class Home extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBranch;
     private javax.swing.JButton btnCustomer;
-    private javax.swing.JButton btnHome;
+    private javax.swing.JButton btnDashboard;
     private javax.swing.JButton btnItems;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnOrder;
